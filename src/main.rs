@@ -1,19 +1,19 @@
 use std::env;
 use std::collections::HashMap;
-use std::process::{exit, Command, Stdio};
+use std::process::{exit, Command, Output, Stdio};
 use std::str;
 
 fn main() {
     let input_arguments: Vec<String> = env::args().collect();
 
     let interpreters = ["php", "php70", "php71", "php72"];
-    let mut interpreter: &str = "";
-    let mut binary: &str = "";
+    let mut interpreter = String::new();
+    let mut binary = String::new();
 
     let mut aliases = HashMap::new();
-    aliases.insert("m1", "n98-magerun");
-    aliases.insert("m2", "n98-magerun2");
-    aliases.insert("cc", "composer");
+    aliases.insert(string("m1"), string("n98-magerun"));
+    aliases.insert(string("m2"), string("n98-magerun2"));
+    aliases.insert(string("cc"), string("composer"));
 
     // Start from index one, since first element is the executed binary, which we don't need right now.
     for i in 1..input_arguments.len() {
@@ -21,34 +21,33 @@ fn main() {
 
         if i == 1 {
             if interpreters.contains(&arg) {
-                interpreter = &arg;
+                interpreter = arg.to_string();
             } else  {
-                binary = &arg;
+                binary = arg.to_string();
             }
         }
 
-        if i == 2 && interpreter != "" {
-            binary = &arg;
+        if i == 2 && !interpreter.is_empty() {
+            binary = arg.to_string();
             break;
         }
     }
 
-    if aliases.contains_key(binary) {
-        binary = aliases.get(binary).unwrap();
+    if aliases.contains_key(&binary) {
+        binary = aliases.get(&binary).unwrap().to_string();
     }
 
     let mut executable = binary;
     let mut command_arguments_index = 2;
     let mut command_arguments = Vec::new();
 
-    if interpreter != "" {
+    if !interpreter.is_empty() {
         let output = Command::new("which")
-                .arg(binary)
+                .arg(executable)
                 .output()
                 .expect("Execution of 'which' failed.");
 
-        let binary_path = String::from_utf8(output.stdout).unwrap().trim().to_string();
-        command_arguments.push(binary_path);
+        command_arguments.push(output_to_string(output));
 
         executable = interpreter;
         command_arguments_index += 1;
@@ -67,4 +66,20 @@ fn main() {
               .expect("Failed to execute command");
 
     exit(status.code().unwrap());
+}
+
+/**
+ * Create String from str.
+ */
+fn string(value: &str) -> String {
+    return value.to_owned();
+}
+
+/**
+ * Get string from Output type.
+ *
+ * @TODO: What about stderr?
+ */
+fn output_to_string(output: Output) -> String {
+    return String::from_utf8(output.stdout).unwrap().trim().to_string();
 }
