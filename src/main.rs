@@ -16,22 +16,18 @@ fn main() {
     aliases.insert(string("m2"), string("n98-magerun2"));
     aliases.insert(string("cc"), string("composer"));
 
-    // Start from index one, since first element is the executed binary, which we don't need right now.
-    for i in 1..input_arguments.len() {
-        let arg: &str = &input_arguments[i];
+    // Determine if first argument is interpreter or binary.
+    let arg_first = &input_arguments[1];
+    if interpreters.contains(&arg_first.as_str()) {
+        interpreter = string(&arg_first);
+    } else {
+        binary = string(&arg_first);
+    }
 
-        if i == 1 {
-            if interpreters.contains(&arg) {
-                interpreter = arg.to_string();
-            } else  {
-                binary = arg.to_string();
-            }
-        }
-
-        if i == 2 && !interpreter.is_empty() {
-            binary = arg.to_string();
-            break;
-        }
+    // If interpreter is specified, find out the binary that needs to be executed.
+    if !interpreter.is_empty() && input_arguments.len() >= 3 {
+        let arg_second = &input_arguments[2];
+        binary = string(&arg_second);
     }
 
     // Fail fast, no binary to run.
