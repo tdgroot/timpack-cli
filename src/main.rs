@@ -1,5 +1,5 @@
-use std::env;
 use std::collections::HashMap;
+use std::env;
 use std::process::{exit, Command, Output, Stdio};
 use std::str;
 
@@ -31,6 +31,11 @@ fn main() {
             binary = arg.to_string();
             break;
         }
+    }
+
+    if binary.is_empty() {
+        println!("No binary given.");
+        exit(1);
     }
 
     if aliases.contains_key(&binary) {
