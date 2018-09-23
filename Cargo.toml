@@ -1,6 +1,6 @@
 [package]
 name = "timpack-cli"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Timon de Groot <tdegroot96@gmail.com>"]
 license = "MIT"
 description = "A command-line-interface to make my life easier"
