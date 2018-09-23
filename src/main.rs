@@ -10,6 +10,7 @@ fn main() {
     let mut interpreter = String::new();
     let mut binary = String::new();
 
+    // Create a hashmap for the command aliases.
     let mut aliases = HashMap::new();
     aliases.insert(string("m1"), string("n98-magerun"));
     aliases.insert(string("m2"), string("n98-magerun2"));
@@ -33,11 +34,13 @@ fn main() {
         }
     }
 
+    // Fail fast, no binary to run.
     if binary.is_empty() {
         println!("No binary given.");
         exit(1);
     }
 
+    // Resolve alias usage if necessary.
     if aliases.contains_key(&binary) {
         binary = aliases.get(&binary).unwrap().to_string();
     }
@@ -46,6 +49,7 @@ fn main() {
     let mut command_arguments_index = 2;
     let mut command_arguments = Vec::new();
 
+    // Prepare command execution if binary needs to be run with interpreter.
     if !interpreter.is_empty() {
         let output = Command::new("which")
                 .arg(executable)
@@ -58,10 +62,12 @@ fn main() {
         command_arguments_index += 1;
     }
 
+    // Push all remaining stdin args to the new command arguments
     for i in command_arguments_index..input_arguments.len() {
         &command_arguments.push(input_arguments[i].to_owned());
     }
 
+    // Run command and wait for status.
     let status = Command::new(executable)
               .args(command_arguments)
               .stdin(Stdio::inherit())
@@ -70,6 +76,7 @@ fn main() {
               .status()
               .expect("Failed to execute command");
 
+    // Exit program with status code of command execution.
     exit(status.code().unwrap());
 }
 
