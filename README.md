@@ -1,3 +1,6 @@
+
+[![Latest version](https://img.shields.io/crates/v/timpack-cli.svg)](https://crates.io/crates/timpack-cli)
+
 # timpack-cli
 A command-line-interface to make my life easier.
 
