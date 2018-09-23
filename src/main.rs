@@ -6,6 +6,8 @@ use std::str;
 fn main() {
     let input_arguments: Vec<String> = env::args().collect();
 
+    fail_if_no_input_arguments(&input_arguments);
+
     let interpreters = ["php", "php70", "php71", "php72"];
     let mut interpreter = String::new();
     let mut binary = String::new();
@@ -74,6 +76,16 @@ fn main() {
 
     // Exit program with status code of command execution.
     exit(status.code().unwrap());
+}
+
+/**
+ * Fail if input_arguments contains less than 2 elements.
+ */
+fn fail_if_no_input_arguments(input_arguments: &Vec<String>) {
+    if input_arguments.len() < 2 {
+        println!("No arguments given.");
+        exit(1);
+    }
 }
 
 /**
