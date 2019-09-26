@@ -50,7 +50,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "timpack-cli"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "which 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
