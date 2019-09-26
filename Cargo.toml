@@ -5,7 +5,7 @@ authors = ["Timon de Groot <tdegroot96@gmail.com>"]
 description = "A command-line-interface to make my life easier"
 documentation="https://github.com/tdgroot/timpack-cli"
 homepage="https://github.com/tdgroot/timpack-cli"
-license="GPLv3"
+license="GPL-3.0"
 
 [dependencies]
 which = "3.0.0"
