@@ -1,9 +1,11 @@
 [package]
 name = "timpack-cli"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Timon de Groot <tdegroot96@gmail.com>"]
-license = "MIT"
 description = "A command-line-interface to make my life easier"
+documentation="https://github.com/tdgroot/timpack-cli"
+homepage="https://github.com/tdgroot/timpack-cli"
+license="GPLv3"
 
 [dependencies]
 which = "3.0.0"
