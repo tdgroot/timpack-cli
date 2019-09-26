@@ -1,7 +1,9 @@
 use std::collections::HashMap;
 use std::env;
-use std::process::{exit, Command, Output, Stdio};
+use std::process::{exit, Command, Stdio};
 use std::str;
+
+extern crate which;
 
 fn main() {
     let input_arguments: Vec<String> = env::args().collect();
@@ -49,12 +51,9 @@ fn main() {
 
     // Prepare command execution if binary needs to be run with interpreter.
     if !interpreter.is_empty() {
-        let output = Command::new("which")
-                .arg(executable)
-                .output()
-                .expect("Execution of 'which' failed.");
+        let result = which::which(executable).unwrap();
 
-        command_arguments.push(output_to_string(output));
+        command_arguments.push(result.to_str().unwrap().to_owned());
 
         executable = interpreter;
         command_arguments_index += 1;
@@ -93,13 +92,4 @@ fn fail_if_no_input_arguments(input_arguments: &Vec<String>) {
  */
 fn string(value: &str) -> String {
     return value.to_owned();
-}
-
-/**
- * Get string from Output type.
- *
- * @TODO: What about stderr?
- */
-fn output_to_string(output: Output) -> String {
-    return String::from_utf8(output.stdout).unwrap().trim().to_string();
 }

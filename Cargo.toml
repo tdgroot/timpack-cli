@@ -6,3 +6,4 @@ license = "MIT"
 description = "A command-line-interface to make my life easier"
 
 [dependencies]
+which = "3.0.0"
